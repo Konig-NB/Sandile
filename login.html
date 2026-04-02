@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login / Register — KAM WIREFRAMES</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --clay:#C4572A; --earth:#8B4513; --gold:#D4943A;
+    --cream:#FAF5ED; --ink:#1A120B; --warm-gray:#6B5B50;
+    --sage:#5E7B5C; --light-clay:#F0DDD0; --border:rgba(196,87,42,0.2);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--ink); color:var(--ink); font-family:'DM Sans',sans-serif; min-height:100vh; display:grid; grid-template-columns:1fr 1fr; }
+
+  .left-panel {
+    background:var(--ink); padding:3rem; display:flex; flex-direction:column; justify-content:space-between;
+    position:relative; overflow:hidden;
+  }
+  .left-panel::before { content:''; position:absolute; bottom:-80px; left:-80px; width:350px; height:350px; background:radial-gradient(circle,rgba(196,87,42,0.2),transparent 65%); border-radius:50%; pointer-events:none; }
+  .left-panel::after { content:''; position:absolute; top:-40px; right:-40px; width:200px; height:200px; background:radial-gradient(circle,rgba(212,148,58,0.12),transparent 65%); border-radius:50%; pointer-events:none; }
+  .panel-logo { font-family:'Playfair Display',serif; font-size:1.6rem; font-weight:900; color:var(--cream); text-decoration:none; position:relative; z-index:1; }
+  .panel-logo span { color:var(--clay); }
+  .panel-middle { position:relative; z-index:1; }
+  .panel-middle h2 { font-family:'Playfair Display',serif; font-size:2.5rem; font-weight:700; color:var(--cream); line-height:1.2; margin-bottom:1.2rem; }
+  .panel-middle h2 em { font-style:italic; color:var(--gold); }
+  .panel-middle p { font-size:0.9rem; color:rgba(250,245,237,0.5); line-height:1.8; max-width:340px; font-weight:300; }
+  .quote-block { margin-top:2.5rem; padding:1.5rem; border-left:3px solid var(--clay); background:rgba(255,255,255,0.04); border-radius:0 8px 8px 0; }
+  .quote-block blockquote { font-family:'Playfair Display',serif; font-style:italic; font-size:1.05rem; color:rgba(250,245,237,0.8); line-height:1.6; margin-bottom:0.75rem; }
+  .quote-author { font-size:0.78rem; color:rgba(250,245,237,0.4); display:flex; align-items:center; gap:0.5rem; }
+  .quote-avatar { width:28px; height:28px; border-radius:50%; background:var(--clay); display:flex; align-items:center; justify-content:center; font-size:0.7rem; color:#fff; }
+  .panel-bottom { font-size:0.75rem; color:rgba(250,245,237,0.2); position:relative; z-index:1; }
+
+  .right-panel { background:var(--cream); display:flex; flex-direction:column; justify-content:center; padding:3rem; position:relative; overflow-y:auto; }
+  .back-link { position:absolute; top:2rem; left:2rem; display:flex; align-items:center; gap:0.4rem; font-size:0.82rem; color:var(--warm-gray); text-decoration:none; }
+  .back-link:hover { color:var(--clay); }
+
+  .form-container { max-width:420px; width:100%; margin:0 auto; }
+  .form-header { margin-bottom:2rem; }
+  .form-header .tag { font-size:0.73rem; letter-spacing:1.8px; text-transform:uppercase; color:var(--clay); font-weight:500; display:block; margin-bottom:0.6rem; }
+  .form-header h1 { font-family:'Playfair Display',serif; font-size:2rem; font-weight:700; }
+  .form-header p { font-size:0.85rem; color:var(--warm-gray); margin-top:0.5rem; font-weight:300; }
+
+  .auth-tabs { display:flex; background:rgba(196,87,42,0.08); border-radius:8px; padding:4px; margin-bottom:1.75rem; }
+  .tab-btn { flex:1; padding:0.6rem; border:none; background:transparent; border-radius:6px; font-family:'DM Sans',sans-serif; font-size:0.82rem; font-weight:500; color:var(--warm-gray); cursor:pointer; transition:all 0.2s; }
+  .tab-btn.active { background:#fff; color:var(--clay); box-shadow:0 1px 6px rgba(0,0,0,0.1); }
+
+  .field { display:flex; flex-direction:column; margin-bottom:1rem; }
+  label { font-size:0.8rem; font-weight:500; margin-bottom:0.4rem; color:var(--ink); }
+  input, select { width:100%; padding:0.75rem 0.95rem; border:1.5px solid var(--border); border-radius:6px; font-family:'DM Sans',sans-serif; font-size:0.9rem; color:var(--ink); background:#fff; outline:none; transition:border-color 0.2s,box-shadow 0.2s; -webkit-appearance:none; }
+  input:focus, select:focus { border-color:var(--clay); box-shadow:0 0 0 3px rgba(196,87,42,0.1); }
+  input::placeholder { color:rgba(107,91,80,0.45); }
+
+  .field-row { display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; }
+  .label-row { display:flex; justify-content:space-between; align-items:center; }
+  .forgot-link { font-size:0.78rem; color:var(--clay); text-decoration:none; font-weight:500; }
+  .password-wrap { position:relative; }
+  .toggle-pw { position:absolute; right:0.9rem; top:50%; transform:translateY(-50%); cursor:pointer; font-size:0.9rem; color:var(--warm-gray); user-select:none; }
+
+  .role-picker { display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; margin-bottom:1rem; }
+  .role-option { border:1.5px solid var(--border); border-radius:8px; padding:0.85rem; cursor:pointer; text-align:center; transition:all 0.2s; }
+  .role-option:hover { border-color:var(--clay); }
+  .role-option.selected { border-color:var(--clay); background:rgba(196,87,42,0.06); }
+  .role-option .role-icon { font-size:1.5rem; display:block; margin-bottom:0.3rem; }
+  .role-option .role-name { font-size:0.8rem; font-weight:600; }
+  .role-option .role-desc { font-size:0.7rem; color:var(--warm-gray); }
+
+  .artisan-extra { display:none; }
+
+  .error-msg { display:none; background:#FEE; border:1px solid #D93025; border-radius:6px; padding:0.75rem 1rem; font-size:0.82rem; color:#D93025; margin-bottom:1rem; }
+  .success-msg { display:none; background:#EFF7EF; border:1px solid var(--sage); border-radius:6px; padding:0.75rem 1rem; font-size:0.82rem; color:var(--sage); margin-bottom:1rem; }
+
+  .submit-btn { width:100%; padding:0.9rem; background:var(--clay); color:#fff; border:none; border-radius:6px; font-family:'DM Sans',sans-serif; font-size:1rem; font-weight:500; cursor:pointer; transition:all 0.2s; margin-top:0.5rem; }
+  .submit-btn:hover { background:var(--earth); transform:translateY(-1px); box-shadow:0 4px 16px rgba(196,87,42,0.3); }
+  .submit-btn:disabled { opacity:0.6; transform:none; cursor:not-allowed; }
+
+  .divider { text-align:center; font-size:0.78rem; color:var(--warm-gray); margin:1.25rem 0; position:relative; }
+  .divider::before,.divider::after { content:''; position:absolute; top:50%; width:calc(50% - 2rem); height:1px; background:var(--border); }
+  .divider::before { left:0; } .divider::after { right:0; }
+  .switch-prompt { text-align:center; font-size:0.85rem; color:var(--warm-gray); }
+  .switch-prompt a { color:var(--clay); font-weight:500; text-decoration:none; cursor:pointer; }
+
+  @media(max-width:800px) { body { grid-template-columns:1fr; } .left-panel { display:none; } .right-panel { padding:4rem 1.5rem 2rem; } }
+</style>
+</head>
+<body>
+
+<div class="left-panel">
+  <a href="index.html" class="panel-logo">KAM<span>WIREFRAMES</span></a>
+  <div class="panel-middle">
+    <h2>Your Community,<br><em>Connected</em></h2>
+    <p>Join thousands of homeowners and artisans across the township. Real skills, real people, real results.</p>
+    <div class="quote-block">
+      <blockquote>"Found a reliable plumber in Kwanele within minutes. This platform changed how our estate handles maintenance."</blockquote>
+      <div class="quote-author"><div class="quote-avatar">PM</div>Phindi M. — Estate Manager, Siluma</div>
+    </div>
+  </div>
+  <div class="panel-bottom">© 2025 KAM WIREFRAMES · Serving Your Township</div>
+</div>
+
+<div class="right-panel">
+  <a href="index.html" class="back-link">← Back to Home</a>
+
+  <div class="form-container">
+    <div class="form-header">
+      <span class="tag" id="formTag">Secure Access</span>
+      <h1 id="formTitle">Welcome Back</h1>
+      <p id="formSub">Sign in to your KAM WIREFRAMES account.</p>
+    </div>
+
+    <div class="auth-tabs">
+      <button class="tab-btn active" onclick="switchMode('login',this)">Login</button>
+      <button class="tab-btn" onclick="switchMode('register',this)">Register</button>
+    </div>
+
+    <div class="error-msg" id="errorMsg"></div>
+    <div class="success-msg" id="successMsg"></div>
+
+    <!-- ===== LOGIN FORM ===== -->
+    <div id="loginForm">
+      <div class="field">
+        <label>Email Address</label>
+        <input type="email" id="l-email" placeholder="you@example.com">
+      </div>
+      <div class="field">
+        <div class="label-row">
+          <label>Password</label>
+          <a href="#" class="forgot-link" onclick="forgotPw(event)">Forgot password?</a>
+        </div>
+        <div class="password-wrap">
+          <input type="password" id="l-password" placeholder="Enter your password">
+          <span class="toggle-pw" onclick="togglePw('l-password',this)">👁</span>
+        </div>
+      </div>
+      <button class="submit-btn" onclick="handleLogin()">Sign In →</button>
+      <div class="divider">or</div>
+      <p class="switch-prompt">Don't have an account? <a onclick="switchMode('register',document.querySelectorAll('.tab-btn')[1])">Join free →</a></p>
+    </div>
+
+    <!-- ===== REGISTER FORM ===== -->
+    <div id="registerForm" style="display:none">
+      <div class="field">
+        <label>I am a...</label>
+        <div class="role-picker">
+          <div class="role-option selected" data-role="homeowner" onclick="selectRole(this)">
+            <span class="role-icon">🏠</span>
+            <div class="role-name">Homeowner</div>
+            <div class="role-desc">I need services done</div>
+          </div>
+          <div class="role-option" data-role="pro" onclick="selectRole(this)">
+            <span class="role-icon">🔧</span>
+            <div class="role-name">Artisan Pro</div>
+            <div class="role-desc">I offer services</div>
+          </div>
+          <div class="role-option" data-role="business" onclick="selectRole(this)">
+            <span class="role-icon">🏢</span>
+            <div class="role-name">Business</div>
+            <div class="role-desc">Commercial needs</div>
+          </div>
+          <div class="role-option" data-role="estate" onclick="selectRole(this)">
+            <span class="role-icon">🏘️</span>
+            <div class="role-name">Estate</div>
+            <div class="role-desc">Property management</div>
+          </div>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>First Name</label><input type="text" id="r-fname" placeholder="Sipho"></div>
+        <div class="field"><label>Last Name</label><input type="text" id="r-lname" placeholder="Dlamini"></div>
+      </div>
+      <div class="field"><label>Email Address</label><input type="email" id="r-email" placeholder="you@example.com"></div>
+      <div class="field"><label>Phone Number</label><input type="tel" id="r-phone" placeholder="0812345678"></div>
+      <div class="field">
+        <label>Your Area</label>
+        <select id="r-location">
+          <option value="">Select your area...</option>
+          <option value="sali">Sali</option><option value="kwanele">Kwanele</option>
+          <option value="mngadi">Mngadi</option><option value="radebe">Radebe</option>
+          <option value="zuma">Zuma</option><option value="mavimbela">Mavimbela</option>
+          <option value="siluma">Siluma</option><option value="ndlhazi">Ndlhazi</option>
+        </select>
+      </div>
+      <div class="field">
+        <div class="password-wrap">
+          <label>Password</label>
+          <input type="password" id="r-password" placeholder="Create a password (min 6 chars)" style="margin-top:0.4rem">
+          <span class="toggle-pw" onclick="togglePw('r-password',this)" style="top:68%">👁</span>
+        </div>
+      </div>
+
+      <!-- Artisan extra fields -->
+      <div class="artisan-extra" id="artisanExtra">
+        <div class="field">
+          <label>Your Trade</label>
+          <select id="r-trade">
+            <option value="">Select your trade...</option>
+            <option value="plumber">Plumber</option><option value="electrician">Electrician</option>
+            <option value="carpenter">Carpenter</option><option value="builder">Builder</option>
+            <option value="painter">Painter</option><option value="welder">Welder</option>
+            <option value="tiler">Tiler</option><option value="other">Other</option>
+          </select>
+        </div>
+        <div class="field"><label>Years of Experience</label><input type="number" id="r-years" placeholder="e.g. 5" min="0"></div>
+        <div class="field"><label>Short Bio</label><input type="text" id="r-bio" placeholder="What makes you stand out?"></div>
+      </div>
+
+      <button class="submit-btn" id="regBtn" onclick="handleRegister()">Create Account →</button>
+      <div class="divider">or</div>
+      <p class="switch-prompt">Already have an account? <a onclick="switchMode('login',document.querySelectorAll('.tab-btn')[0])">Sign in →</a></p>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  // ── DB ──
+  function getDB() { try { return JSON.parse(localStorage.getItem('kamDB')||'{}'); } catch(e){return{};} }
+  function saveDB(db) { localStorage.setItem('kamDB', JSON.stringify(db)); }
+  function getSession() { try { return JSON.parse(localStorage.getItem('kamSession')||'null'); } catch(e){return null;} }
+  function setSession(s) { localStorage.setItem('kamSession', JSON.stringify(s)); }
+
+  // ── Init DB if needed ──
+  function ensureDB() {
+    const db = getDB();
+    if (!db.initialized) {
+      db.artisanProfiles = db.artisanProfiles || [
+        {id:1,userId:101,name:'Sipho Dlamini',trade:'plumber',location:'kwanele',bio:'10+ years fixing pipes across the township.',rating:4.8,reviews:42,available:true,verified:true,years:10,initials:'SD',color:'#C4572A'},
+        {id:2,userId:102,name:'Nomvula Khumalo',trade:'electrician',location:'sali',bio:'Certified electrician, wiring and fault-finding specialist.',rating:4.9,reviews:31,available:true,verified:true,years:7,initials:'NK',color:'#5E7B5C'},
+        {id:3,userId:103,name:'Bongani Zulu',trade:'carpenter',location:'mngadi',bio:'Custom furniture, doors, and repairs.',rating:4.6,reviews:18,available:false,verified:true,years:5,initials:'BZ',color:'#D4943A'},
+        {id:4,userId:104,name:'Thandi Mthembu',trade:'builder',location:'radebe',bio:'Renovation and new builds done right.',rating:4.7,reviews:25,available:true,verified:false,years:12,initials:'TM',color:'#8B4513'},
+        {id:5,userId:105,name:'Lungelo Ndlovu',trade:'painter',location:'siluma',bio:'Interior and exterior painting, clean finishes.',rating:4.5,reviews:14,available:true,verified:true,years:4,initials:'LN',color:'#5E7B5C'},
+        {id:6,userId:106,name:'Zanele Mngadi',trade:'plumber',location:'mavimbela',bio:'Emergency callouts and installations.',rating:4.7,reviews:22,available:true,verified:true,years:8,initials:'ZM',color:'#C4572A'},
+        {id:7,userId:107,name:'Phili Radebe',trade:'tiler',location:'zuma',bio:'Bathroom, kitchen and floor tiling.',rating:4.8,reviews:19,available:false,verified:true,years:6,initials:'PR',color:'#D4943A'},
+        {id:8,userId:108,name:'Sbu Mavimbela',trade:'welder',location:'ndlhazi',bio:'Structural and decorative welding.',rating:4.6,reviews:11,available:true,verified:false,years:9,initials:'SM',color:'#6B5B50'},
+      ];
+      db.users = db.users || [];
+      db.jobs = db.jobs || [];
+      db.messages = db.messages || [];
+      db.reviews = db.reviews || [];
+      db.initialized = true;
+      saveDB(db);
+    }
+    return db;
+  }
+
+  let currentMode = 'login';
+  let selectedRole = 'homeowner';
+
+  // Check URL params
+  const params = new URLSearchParams(location.search);
+  if (params.get('role') === 'pro') {
+    setTimeout(() => {
+      switchMode('register', document.querySelectorAll('.tab-btn')[1]);
+      document.querySelector('[data-role="pro"]').click();
+    }, 100);
+  }
+
+  function switchMode(mode, btn) {
+    currentMode = mode;
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('loginForm').style.display = mode === 'login' ? 'block' : 'none';
+    document.getElementById('registerForm').style.display = mode === 'register' ? 'block' : 'none';
+    document.getElementById('errorMsg').style.display = 'none';
+    document.getElementById('successMsg').style.display = 'none';
+    if (mode === 'login') {
+      document.getElementById('formTag').textContent = 'Secure Access';
+      document.getElementById('formTitle').textContent = 'Welcome Back';
+      document.getElementById('formSub').textContent = 'Sign in to your KAM WIREFRAMES account.';
+    } else {
+      document.getElementById('formTag').textContent = 'Free Registration';
+      document.getElementById('formTitle').textContent = 'Join the Community';
+      document.getElementById('formSub').textContent = 'Create your account in under 2 minutes.';
+    }
+  }
+
+  function selectRole(el) {
+    document.querySelectorAll('.role-option').forEach(r => r.classList.remove('selected'));
+    el.classList.add('selected');
+    selectedRole = el.dataset.role;
+    document.getElementById('artisanExtra').style.display = selectedRole === 'pro' ? 'block' : 'none';
+  }
+
+  function togglePw(id, el) {
+    const inp = document.getElementById(id);
+    if (inp.type === 'password') { inp.type = 'text'; el.textContent = '🙈'; }
+    else { inp.type = 'password'; el.textContent = '👁'; }
+  }
+
+  function showError(msg) {
+    const el = document.getElementById('errorMsg');
+    el.textContent = '⚠ ' + msg;
+    el.style.display = 'block';
+    document.getElementById('successMsg').style.display = 'none';
+  }
+  function showSuccess(msg) {
+    const el = document.getElementById('successMsg');
+    el.textContent = '✅ ' + msg;
+    el.style.display = 'block';
+    document.getElementById('errorMsg').style.display = 'none';
+  }
+
+  function handleLogin() {
+    const email = document.getElementById('l-email').value.trim().toLowerCase();
+    const password = document.getElementById('l-password').value;
+    if (!email || !password) { showError('Please fill in all fields.'); return; }
+
+    const db = ensureDB();
+    const user = (db.users || []).find(u => u.email === email && u.password === password);
+    if (!user) { showError('Incorrect email or password.'); return; }
+
+    setSession({ userId: user.id, role: user.role, name: user.name, email: user.email, location: user.location });
+    showSuccess('Login successful! Redirecting...');
+
+    setTimeout(() => {
+      if (user.role === 'pro') window.location.href = 'artisan-profile.html';
+      else window.location.href = 'client-profile.html';
+    }, 800);
+  }
+
+  function handleRegister() {
+    const fname = document.getElementById('r-fname').value.trim();
+    const lname = document.getElementById('r-lname').value.trim();
+    const email = document.getElementById('r-email').value.trim().toLowerCase();
+    const phone = document.getElementById('r-phone').value.trim();
+    const location = document.getElementById('r-location').value;
+    const password = document.getElementById('r-password').value;
+
+    if (!fname || !lname || !email || !phone || !location || !password)
+      return showError('Please fill in all required fields.');
+    if (password.length < 6)
+      return showError('Password must be at least 6 characters.');
+
+    const db = ensureDB();
+    if ((db.users || []).find(u => u.email === email))
+      return showError('An account with this email already exists.');
+
+    const newId = Date.now();
+    const initials = (fname[0] + lname[0]).toUpperCase();
+    const colors = ['#C4572A','#5E7B5C','#D4943A','#8B4513','#6B5B50'];
+    const color = colors[Math.floor(Math.random() * colors.length)];
+
+    const newUser = { id: newId, name: fname + ' ' + lname, firstName: fname, lastName: lname, email, phone, role: selectedRole, location, password, initials, color, createdAt: new Date().toISOString() };
+    db.users.push(newUser);
+
+    // If artisan, create artisan profile
+    if (selectedRole === 'pro') {
+      const trade = document.getElementById('r-trade').value;
+      const years = parseInt(document.getElementById('r-years').value) || 0;
+      const bio = document.getElementById('r-bio').value.trim() || '';
+      if (!trade) return showError('Please select your trade.');
+      const newProfile = { id: Date.now() + 1, userId: newId, name: fname + ' ' + lname, trade, location, bio, rating: 0, reviews: 0, available: true, verified: false, years, initials, color };
+      db.artisanProfiles = db.artisanProfiles || [];
+      db.artisanProfiles.push(newProfile);
+    } else {
+      db.clientProfiles = db.clientProfiles || [];
+      db.clientProfiles.push({ id: Date.now() + 1, userId: newId, name: fname + ' ' + lname, location, initials, color, createdAt: new Date().toISOString() });
+    }
+
+    saveDB(db);
+    setSession({ userId: newId, role: selectedRole, name: fname + ' ' + lname, email, location });
+    showSuccess('Account created! Redirecting...');
+    setTimeout(() => {
+      if (selectedRole === 'pro') window.location.href = 'artisan-profile.html';
+      else window.location.href = 'client-profile.html';
+    }, 800);
+  }
+
+  function forgotPw(e) {
+    e.preventDefault();
+    const email = document.getElementById('l-email').value.trim();
+    if (email) showSuccess('Password reset link sent to: ' + email);
+    else showError('Please enter your email address first.');
+  }
+
+  // Auto-redirect if already logged in
+  const sess = getSession();
+  if (sess) {
+    if (sess.role === 'pro') window.location.href = 'artisan-profile.html';
+    else window.location.href = 'client-profile.html';
+  }
+
+  ensureDB();
+</script>
+</body>
+</html>
